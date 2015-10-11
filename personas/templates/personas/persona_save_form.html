@@ -1,0 +1,185 @@
+{% extends "igle/base.html" %}
+{% load staticfiles %}
+{% load i18n %}
+
+{% block body %}
+<div class="row">
+	<div class="col-md-12">
+        {% block page_title %}{% endblock %}
+	</div>
+</div>
+
+<div class="row" id="el">
+
+	<div class="col-md-12">
+
+        <form id="personaForm" class="form-horizontal" method="post" action="{% block form_action %}{% endblock %}">
+
+            <div class="form-group {% if form.nombre.errors %}has-error{% endif %}">
+                <label class="control-label col-md-3">Nombre</label>
+                <div class="col-md-9">
+                    <input class="form-control nombre" value="{{ persona.nombre }}" placeholder="nombres y apellidos"
+                           name="nombre" aria-describedby="help_nombre" />
+                    <span class="help-block">
+                        {% if form.nombre.errors %}
+                            {% for msgerror in form.nombre.errors %}
+                                {{ msgerror }}
+                            {% endfor %}
+                        {% endif %}
+                    </span>
+					
+                </div>
+            </div>
+
+
+
+            <div class="form-group {% if form.identificacion_codigo.errors %}has-error{% endif %}">
+                <label class="control-label col-md-3">Tipo de identificaci&oacute;n</label>
+                <div class="col-md-9">
+
+                    <div class="input-group">
+                        <span class="input-group-btn" id="TipoIdentificacion">
+                            <button type="button" class="btn btn-default identificacion_descripcion" data-tipo="CC">
+                            Cédula de ciudadanía
+                            </button>
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="caret"></span></button>
+
+                            <ul class="dropdown-menu">
+                                <li class="dropdown-header">Documentos Nacionales</li>
+                                <li><a data-tipo="CC">C&eacute;dula de ciudadan&iacute;a</a></li>
+                                <li><a data-tipo="TI">Tarjeta de identidad</a></li>
+                                <li class="dropdown-header">Documentos Internacionales</li>
+                                <li><a data-tipo="PS">Pasaporte</a></li>
+                            </ul>
+
+                        </span>
+						
+						<input class="form-control imput-sm identificacion_tipo" value="CC" name="identificacion_tipo" type="hidden" />
+
+                        <input class="form-control imput-sm identificacion_codigo" value="{{ persona.identificacion_codigo }}" name="identificacion_codigo" />
+
+                    </div>
+                    <span class="help-block">
+                        {% if form.identificacion_codigo.errors %}
+                            {% for msgerror in form.identificacion_codigo.errors %}
+                                {{ msgerror }}
+                            {% endfor %}
+                        {% endif %}
+                    </span>
+
+                </div>
+            </div>
+
+            <div class="form-group {% if form.congregacion.errors %}has-error{% endif %}">
+                <label class="control-label col-md-3">Congregacion</label>
+                <div class="col-md-9">
+                    <input class="form-control imput-sm congregacion" value="{{ persona.congregacion }}" name="congregacion"/>
+                    <span class="help-block">
+                        {% if form.congregacion.errors %}
+                            {% for msgerror in form.congregacion.errors %}
+                                {{ msgerror }}
+                            {% endfor %}
+                        {% endif %}
+                    </span>
+
+                </div>
+            </div>
+
+            <div class="form-group {% if form.fecha_nacimiento.errors %}has-error{% endif %}">
+                <label class="control-label col-md-3">Fecha de nacimiento</label>
+                <div class="col-md-9">
+                    <div class="input-group" id="fechaNacPicker" data-date="{{ persona.fecha_nacimiento|date:'Y-m-d' }}">
+                        <div class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></div>
+                        <input class="form-control" value="{{ persona.fecha_nacimiento|date:'d F Y' }}" id="fechaNacimientoInput" name="fechaNacPicker" autocomplete="off" />
+                    </div>
+
+                    <input id="fecha_nacimiento" value="{{ persona.fecha_nacimiento|date:'Y-m-d' }}" name="fecha_nacimiento" type="hidden" />
+                    <span class="help-block">
+                        {% if form.fecha_nacimiento.errors %}
+                            {% for msgerror in form.fecha_nacimiento.errors %}
+                                {{ msgerror }}
+                            {% endfor %}
+                        {% endif %}
+                    </span>
+
+                </div>
+            </div>
+
+            <div class="form-group {% if form.email.errors %}has-error{% endif %}">
+                <label class="control-label col-md-3">Correo electronico</label>
+                <div class="col-md-9">
+                    <input class="form-control email" value="{{ persona.email }}" placeholder="correo@dominio.co" name="email"/>
+                    <span class="help-block">
+                        {% if form.email.errors %}
+                            {% for msgerror in form.email.errors %}
+                                {{ msgerror }}
+                            {% endfor %}
+                        {% endif %}
+                    </span>
+
+                </div>
+            </div>
+
+            <div class="form-group {% if form.celular.errors %}has-error{% endif %}">
+                <label class="control-label col-md-3">Celular de contacto</label>
+                <div class="col-md-9">
+                    <input class="form-control celular" value="{{ persona.celular }}" name="celular"/>
+                    <span class="help-block">
+                        {% if form.celular.errors %}
+                            {% for msgerror in form.celular.errors %}
+                                {{ msgerror }}
+                            {% endfor %}
+                        {% endif %}
+                    </span>
+
+                </div>
+            </div>
+
+            <div class="form-group {% if form.genero.errors %}has-error{% endif %}">
+                <label class="control-label col-md-3">Genero</label>
+                <div class="col-md-9">
+
+                    <div class="btn-group" data-toggle="buttons">
+                        <label class="btn btn-sm btn-default {% if persona.genero == 'M' %}active{% endif %}">
+                            <input type="radio" name="genero" value="M" id="option1" autocomplete="off" {% if persona.genero == "M" %}checked{% endif %}> Masculino
+                        </label>
+                        <label class="btn btn-sm btn-default {% if persona.genero == 'F' %}active{% endif %}">
+                            <input type="radio" name="genero" value="F" id="option2" autocomplete="off" {% if persona.genero == "F" %}checked{% endif %}> Femenino
+                        </label>
+                    </div>
+                    <span class="help-block">
+                        {% if form.genero.errors %}
+                            {% for msgerror in form.genero.errors %}
+                                {{ msgerror }}
+                            {% endfor %}
+                        {% endif %}
+                    </span>
+
+                    <div class="btn-group pull-right" data-toggle="buttons">
+                        <label class="btn btn-sm btn-primary active">
+                            <input type="checkbox" autocomplete="off" name="habilitado" checked> Habilitado
+                        </label>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-3 col-sm-9">
+                    <button class="btn btn-sm btn-primary btn-guardar" type"submit">Guardar</button>
+                    <a class="btn btn-sm btn-default btn-cancelar" onClick="history.go(-1); return false;">Cancelar</a>
+                </div>
+            </div>
+			
+        </form>
+		
+	</div>
+
+</div>
+
+{% endblock %}
+
+{% block script %}
+<script src="{% static "personas/js/views.js" %}" type="text/javascript"></script>
+<script src="{% static "personas/js/save.js" %}" type="text/javascript"></script>
+{% endblock %}
