@@ -1,4 +1,8 @@
+from django.contrib.auth.decorators import login_required
+from django.core.urlresolvers import reverse_lazy
 from django.http import JsonResponse
+from django.utils.decorators import method_decorator
+
 
 class JSONResponseMixin(object):
     """
@@ -22,3 +26,21 @@ class JSONResponseMixin(object):
         # objects -- such as Django model instances or querysets
         # -- can be serialized as JSON.
         return context
+	
+		
+
+class LoginRequiredMixin(object):
+	
+	"""
+		This view is based on LoginRequiredMixin class of the django-guardian app
+		For more detail, visit: https://github.com/django-guardian/django-guardian/blob/devel/guardian/mixins.py
+	"""
+	
+	redirect_field_name = "next"
+	login_url = reverse_lazy("login")
+
+	def dispatch(self, request, *args, **kwargs):
+		return login_required(redirect_field_name=self.redirect_field_name,
+			login_url=self.login_url)(
+			super(LoginRequiredMixin, self).dispatch
+		)(request, *args, **kwargs)

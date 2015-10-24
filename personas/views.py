@@ -1,13 +1,16 @@
+from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse_lazy
 from django.forms.models import model_to_dict
 from django.http import HttpResponse, JsonResponse
+from django.utils.decorators import method_decorator
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, TemplateView, UpdateView, View
 from django.views.generic.list import MultipleObjectMixin
+
 from .forms import PersonaForm
 from .models import Persona
-from .mixins import JSONResponseMixin
-import json
+from .mixins import JSONResponseMixin, LoginRequiredMixin
 
+import json
 
 class PersonaListView(JSONResponseMixin, ListView):
 	
@@ -94,14 +97,15 @@ class PersonaListView(JSONResponseMixin, ListView):
 			return None
 
 
-class PersonaEditView(UpdateView):
+class PersonaEditView(LoginRequiredMixin, UpdateView):
 
 	fields = ['nombre', 'identificacion_codigo', 'congregacion', 'fecha_nacimiento', 'email', 'celular', 'genero']
 	model = Persona
 	queryset = Persona.objects.all()
 	template_name = "personas/persona_edit_form.html"
 	slug_field = "id"
-
+	
+	
 	def get(self, request, *args, **kwargs):
 
 		print model_to_dict(self.get_object())
@@ -109,13 +113,14 @@ class PersonaEditView(UpdateView):
 		return super(PersonaEditView, self).get(request, *args, **kwargs)
 
 
-class PersonaDetailView(DetailView):
+class PersonaDetailView(LoginRequiredMixin, DetailView):
 
 	context_object_name = "persona"
 	queryset = Persona.objects.all()
 	template_name = "personas/persona_view_form.html"
 	slug_field = "id"
-
+	
+	
 	def get(self, request, *args, **kwargs):
 
 		print model_to_dict(self.get_object())
@@ -124,14 +129,15 @@ class PersonaDetailView(DetailView):
 
 
 
-class PersonaCreateView(CreateView):
+class PersonaCreateView(LoginRequiredMixin, CreateView):
 
 	context_object_name = "persona"
 	form_class = PersonaForm
 	queryset = Persona.objects.all()
 	template_name = "personas/persona_create_form.html"
 	success_url = reverse_lazy('personas:list_view')
-
+	
+	
 	def get(self, request, *args, **kwargs):
 		return super(PersonaCreateView, self).get(request, *args, **kwargs)
 
@@ -169,12 +175,13 @@ class PersonaCreateView(CreateView):
 		return context_data
 	
 
-class PersonaDeleteView(DeleteView):
+class PersonaDeleteView(LoginRequiredMixin, DeleteView):
 	
 	model = Persona
 	queryset = Persona.objects.all()
 	slug_field = "id"
 	success_url = reverse_lazy('personas:list_view')
+	
 	
 	def get(self, request, *args, **kwargs):
 		return self.post(request, *args, **kwargs)
