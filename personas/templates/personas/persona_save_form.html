@@ -19,7 +19,7 @@
                 <label class="control-label col-md-3">Nombre</label>
                 <div class="col-md-9">
                     <input class="form-control nombre" value="{{ persona.nombre }}" placeholder="nombres y apellidos"
-                           name="nombre" aria-describedby="help_nombre" />
+                           name="nombre" />
                     <span class="help-block">
                         {% if form.nombre.errors %}
                             {% for msgerror in form.nombre.errors %}
@@ -38,7 +38,7 @@
                 <div class="col-md-9">
 
                     <div class="input-group">
-                        <span class="input-group-btn" id="TipoIdentificacion">
+                        <div class="input-group-btn" id="TipoIdentificacion">
                             <button type="button" class="btn btn-default identificacion_descripcion" data-tipo="CC">
                             Cédula de ciudadanía
                             </button>
@@ -52,7 +52,7 @@
                                 <li><a data-tipo="PS">Pasaporte</a></li>
                             </ul>
 
-                        </span>
+                        </div>
 						
 						<input class="form-control imput-sm identificacion_tipo" value="CC" name="identificacion_tipo" type="hidden" />
 
@@ -90,7 +90,7 @@
                 <div class="col-md-9">
                     <div class="input-group" id="fechaNacPicker" data-date="{{ persona.fecha_nacimiento|date:'Y-m-d' }}">
                         <div class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></div>
-                        <input class="form-control" value="{{ persona.fecha_nacimiento|date:'d F Y' }}" id="fechaNacimientoInput" name="fechaNacPicker" autocomplete="off" />
+                        <input class="form-control" value="{{ persona.fecha_nacimiento|date:'d F Y' }}" id="fechaNacimientoInput" name="fechaNacPicker" />
                     </div>
 
                     <input id="fecha_nacimiento" value="{{ persona.fecha_nacimiento|date:'Y-m-d' }}" name="fecha_nacimiento" type="hidden" />
@@ -141,10 +141,10 @@
 
                     <div class="btn-group" data-toggle="buttons">
                         <label class="btn btn-sm btn-default {% if persona.genero == 'M' %}active{% endif %}">
-                            <input type="radio" name="genero" value="M" id="option1" autocomplete="off" {% if persona.genero == "M" %}checked{% endif %}> Masculino
+                            <input type="radio" name="genero" value="M" id="option1" {% if persona.genero == "M" %}checked{% endif %}> Masculino
                         </label>
                         <label class="btn btn-sm btn-default {% if persona.genero == 'F' %}active{% endif %}">
-                            <input type="radio" name="genero" value="F" id="option2" autocomplete="off" {% if persona.genero == "F" %}checked{% endif %}> Femenino
+                            <input type="radio" name="genero" value="F" id="option2" {% if persona.genero == "F" %}checked{% endif %}> Femenino
                         </label>
                     </div>
                     <span class="help-block">
@@ -157,7 +157,7 @@
 
                     <div class="btn-group pull-right" data-toggle="buttons">
                         <label class="btn btn-sm btn-primary active">
-                            <input type="checkbox" autocomplete="off" name="habilitado" checked> Habilitado
+                            <input type="checkbox" name="habilitado" checked> Habilitado
                         </label>
                     </div>
 
@@ -166,7 +166,7 @@
 
             <div class="form-group">
                 <div class="col-sm-offset-3 col-sm-9">
-                    <button class="btn btn-sm btn-primary btn-guardar" type"submit">Guardar</button>
+                    <button class="btn btn-sm btn-primary btn-guardar" type="submit">Guardar</button>
                     <a class="btn btn-sm btn-default btn-cancelar" onClick="history.go(-1); return false;">Cancelar</a>
                 </div>
             </div>
