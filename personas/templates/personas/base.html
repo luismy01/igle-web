@@ -1,0 +1,12 @@
+{% extends "igle/base.html" %}
+{% load staticfiles %}
+
+{% block css %}
+	<link href="{% static 'igle/css/3-col-portfolio.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block script %}
+	<script src="{% static 'personas/js/models.js' %}" type="text/javascript"></script>
+	<script src="{% static 'personas/js/collections.js' %}" type="text/javascript"></script>
+	<script src="{% static 'personas/js/views.js' %}" type="text/javascript"></script>
+{% endblock %}

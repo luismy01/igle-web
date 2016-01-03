@@ -4,7 +4,7 @@ from django.forms.models import model_to_dict
 from django.http import HttpResponse, JsonResponse
 from django.utils.decorators import method_decorator
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, TemplateView, UpdateView, View
-from django.views.generic.list import MultipleObjectMixin
+from django.views.generic.list import BaseListView, MultipleObjectMixin
 
 from .forms import PersonaForm
 from .models import Persona
@@ -16,7 +16,7 @@ class PersonaListView(JSONResponseMixin, ListView):
 	
 	context_object_name = "personas"
 	model = Persona
-	paginate_by = 12
+	paginate_by = 20
 	template_name = "personas/list.html"
 
 
@@ -35,7 +35,7 @@ class PersonaListView(JSONResponseMixin, ListView):
 		context_data = super(PersonaListView, self).get_context_data(**kwargs)
 		object_list = context_data["object_list"]
 
-		queryset = [ model_to_dict(item) for item in object_list ]
+		queryset = self.get_queryset_as_dict(object_list)
 		
 		for item in queryset:
 			item["fecha_nacimiento"] = str(item["fecha_nacimiento"])
@@ -47,6 +47,16 @@ class PersonaListView(JSONResponseMixin, ListView):
 
 		return context_data
 
+
+	def get_data(self, context):
+
+		if "json_data" in context:
+			return context["json_data"]
+		else:
+			return None
+	
+	def get_queryset_as_dict(self, queryset, *args, **kwargs):
+		return [ model_to_dict(item) for item in queryset ]
 
 
 	def post(self, request, *args, **kwargs):
@@ -87,14 +97,6 @@ class PersonaListView(JSONResponseMixin, ListView):
 			return self.render_to_json_response(context, safe=False)
 		else:
 			return super(PersonaListView, self).render_to_response(context)
-
-
-	def get_data(self, context):
-
-		if "json_data" in context:
-			return context["json_data"]
-		else:
-			return None
 
 
 class PersonaEditView(LoginRequiredMixin, UpdateView):
