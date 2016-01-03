@@ -78,6 +78,7 @@ WSGI_APPLICATION = 'igle.wsgi.application'
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
 DATABASES = {
+
     'default': {
         #'ENGINE': 'django.db.backends.sqlite3',
         #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
@@ -85,9 +86,10 @@ DATABASES = {
         'NAME': 'igle_dev',
         'USER': 'igle',
         'PASSWORD': 'igle_mysql',
-        'HOST': 'mysql-igle.alwaysdata.net',
+        'HOST': 'mysql2.alwaysdata.com',
         'PORT': '3306',
-    }
+    },
+    
 }
 
 
@@ -108,8 +110,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
-# STATIC_URL = '/static/'
-STATIC_URL = 'http://igle.alwaysdata.net/static/'
+STATIC_URL = '/static/'
+#STATIC_URL = 'http://igle.alwaysdata.net/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "public/static")
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),

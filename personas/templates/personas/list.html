@@ -1,65 +1,140 @@
-{% extends "igle/base.html" %}
+{% extends "personas/base.html" %}
 {% load staticfiles %}
 {% load i18n %}
 
-{% block body %}
-
-<div class="row">
-	<div class="col-md-12">
-		<div class="page-header">
-			
-			<div class="btn-group pull-right" role="group" aria-label="...">
-				<a href="{% url 'personas:create_view' %}" class="btn btn-primary">Agregar nueva persona</a>
-			</div>
-			
-			<h1>Personas <small>(listar)</small></h1>
-			
+{% block content %}
+<section id="listView">
+        
+	<!-- Page Header -->
+	<div class="row">
+		<div class="col-lg-12">
+			<h1 class="page-header">
+				<div class="btn-group pull-right" role="group" aria-label="...">
+					<a href="{% url 'personas:create_view' %}" class="btn btn-primary" id="btnAgregarPersona">Agregar nueva persona</a>
+				</div>
+				Personas
+				<small></small>
+			</h1>
 		</div>
 	</div>
-</div>
-
-<div class="row">
-    
-    {% for p in personas %}
-	<div class="col-md-4">
-		<div class="list-group">
-            <a class="list-group-item" href="{{ p.get_absolute_url }}">
-				<span class="badge"> {% if p.genero == "M" %} Hombre {% else %} Mujer {% endif %} </span>
-				<h4 class="list-group-item-heading"> {{ p.nombre }} </h4>
-				<p class="list-group-item-text">Se congrega en {{ p.congregacion }} </p>
+	<!-- /.row -->
+	
+	<div class="row">
+		<div class="col-md-6">
+			<form>
+				<div class="form-group">
+					<div class="input-group">
+						<input id="txtBuscar" type="text" class="form-control" placeholder="Escribe un nombre...">
+						<span class="input-group-btn">
+							<button id="btnBuscar" class="btn btn-default" type="button">Buscar</button>
+						</span>
+					</div><!-- /input-group -->
+				</div>
+			</form>
+		</div><!-- /.col-lg-6 -->
+	</div><!-- /.row -->
+	
+	<br>
+	
+	<div id="persona-list" class="row" id="coleccion">
+	{% for p in personas %}
+		
+		<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 portfolio-item">
+			<a href="#">
+				<img class="img-responsive" src="http://placehold.it/700x400" alt="">
 			</a>
+			<h3>
+				<a href="{% url 'personas:detail_view' slug=p.id %}">{{ p.nombre }}</a>
+			</h3>
+			<p>Se congrega en {{ p.congregacion }}. </p>
+		</div>
+		
+	{% endfor %}
+	
+	</div>
+	<!-- /#persona-list -->
+	
+	<hr>
+
+	<!-- Pagination -->
+	<div class="row text-center">
+		<div class="col-lg-12">
+			<ul class="pagination">
+				
+				{% if not page_obj.has_previous %}
+					<li class="disabled"><a href="#">&laquo;</a></li>
+				{% else %}
+					<li ><a href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+				{% endif %}
+				
+				{% for i in page_obj.paginator.page_range %}
+					<li class="{%if page_obj.number == i %}active{% endif %}"><a href="?page={{ i }}"> {{ i }} </a></li>
+				{% endfor %}
+				
+				{% if not page_obj.has_next %}
+					<li class="disabled"><a href="#">&raquo;</a></li>
+				{% else %}
+					<li><a href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+				{% endif %}
+				
+			</ul>
 		</div>
 	</div>
-    {% endfor %}
-    
-</div>
+	<!-- /.row -->
+	
+    </section>
+{% endblock %}
 
-<div class="row">
-	<div class="col-md-12 text-center">
+{% block script %}
 
-		<ul class="pagination">
-			
-			{% if not page_obj.has_previous %}
-				<li class="disabled"><a href="#">« Anterior</a></li>
-			{% else %}
-				<li ><a href="?page={{ page_obj.previous_page_number }}">« Anterior</a></li>
-			{% endif %}
+	{{ block.super }}
+	
+	<script type="text/javascript">
 
+		PersonaRouter = Backbone.Router.extend({
 
-			{% for i in page_obj.paginator.page_range %}
-				<li class="{%if page_obj.number == i %}active{% endif %}"><a href="?page={{ i }}"> {{ i }} </a></li>
-			{% endfor %}
+		    routes: {
+		        '': 'home'
+		    },
 
+		    initialize: function () {
 
-			{% if not page_obj.has_next %}
-				<li class="disabled"><a href="#">siguiente »</a></li>
-			{% else %}
-				<li ><a href="?page={{ page_obj.next_page_number }}">siguiente »</a></li>
-			{% endif %}
+		        var personas = new PersonaCollection
+		        personas.reset({{ json_data|safe }});
 
-		</ul>
+		        this.listView = new PersonaListView({collection: personas});
 
-	</div>
-</div>
+		    },
+
+		    home: function() {
+		        this.listView.render();
+		    }
+
+		});
+
+        var app;
+        $( function() {
+            
+            app = new PersonaRouter;
+            Backbone.history.start();
+            
+        });
+        
+    </script>
+
+	<script type="text/template" id="PersonaListItemView">
+
+		<div class="">
+			<a href="#">
+				<img class="img-responsive" src="http://placehold.it/700x400" alt="">
+			</a>
+			<h3>
+				<a class="detail-link" href="{% url 'personas:detail_view' slug="0" %}"><%= p.get('nombre') %></a>
+			</h3>
+			<p>Se congrega en <%= p.get('congregacion') %>. </p>
+		</div>
+
+	</script>
+
 
 {% endblock %}

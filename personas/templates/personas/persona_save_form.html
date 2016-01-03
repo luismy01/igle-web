@@ -1,17 +1,17 @@
-{% extends "igle/base.html" %}
+{% extends "personas/base.html" %}
 {% load staticfiles %}
 {% load i18n %}
 
-{% block body %}
+{% block content %}
 <div class="row">
-	<div class="col-md-12">
+    <div class="col-md-12">
         {% block page_title %}{% endblock %}
-	</div>
+    </div>
 </div>
 
 <div class="row" id="el">
 
-	<div class="col-md-12">
+    <div class="col-md-12">
 
         <form id="personaForm" class="form-horizontal" method="post" action="{% block form_action %}{% endblock %}">
 
@@ -27,7 +27,7 @@
                             {% endfor %}
                         {% endif %}
                     </span>
-					
+                    
                 </div>
             </div>
 
@@ -53,8 +53,8 @@
                             </ul>
 
                         </div>
-						
-						<input class="form-control imput-sm identificacion_tipo" value="CC" name="identificacion_tipo" type="hidden" />
+                        
+                        <input class="form-control imput-sm identificacion_tipo" value="CC" name="identificacion_tipo" type="hidden" />
 
                         <input class="form-control imput-sm identificacion_codigo" value="{{ persona.identificacion_codigo }}" name="identificacion_codigo" />
 
@@ -170,10 +170,10 @@
                     <a class="btn btn-sm btn-default btn-cancelar" onClick="history.go(-1); return false;">Cancelar</a>
                 </div>
             </div>
-			
+            
         </form>
-		
-	</div>
+        
+    </div>
 
 </div>
 
