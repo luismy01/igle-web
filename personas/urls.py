@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, url
-from .views import PersonaCreateView, PersonaDeleteView, PersonaDetailView, PersonaEditView, PersonaListView
+from .views import PersonaCreateView, PersonaDeleteView, PersonaDetailView, PersonaEditView, PersonaListView, PersonaSearchView
 
 urlpatterns = [
 	url(r'^$', PersonaListView.as_view(), name="list_view"),

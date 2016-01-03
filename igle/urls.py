@@ -11,4 +11,7 @@ urlpatterns = [
 	
 	url(r'^login/$',  login, {"template_name": "igle/login.html"}, name="login"),
 	url(r'^logout/$', logout, {"next_page": reverse_lazy("home")}, name="logout"),
+    
+    url(r'^index$',  login, {"template_name": "igle/index.html"}, name="index"),
+    
 ]

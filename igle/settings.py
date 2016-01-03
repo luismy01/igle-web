@@ -86,10 +86,10 @@ DATABASES = {
         'NAME': 'igle_dev',
         'USER': 'igle',
         'PASSWORD': 'igle_mysql',
-        'HOST': 'mysql-igle.alwaysdata.net',
+        'HOST': 'mysql2.alwaysdata.com',
         'PORT': '3306',
-    }
-
+    },
+    
 }
 
 

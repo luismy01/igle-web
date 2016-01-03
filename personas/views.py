@@ -18,8 +18,7 @@ class PersonaListView(JSONResponseMixin, ListView):
 	model = Persona
 	paginate_by = 20
 	template_name = "personas/list.html"
-
-
+	
 	def delete(self, request, *args, **kwargs):
 
 		id_persona = kwargs["id"]
@@ -34,7 +33,6 @@ class PersonaListView(JSONResponseMixin, ListView):
 
 		context_data = super(PersonaListView, self).get_context_data(**kwargs)
 		object_list = context_data["object_list"]
-
 		queryset = self.get_queryset_as_dict(object_list)
 		
 		for item in queryset:
@@ -47,13 +45,14 @@ class PersonaListView(JSONResponseMixin, ListView):
 
 		return context_data
 
-
+	
 	def get_data(self, context):
 
 		if "json_data" in context:
 			return context["json_data"]
 		else:
 			return None
+	
 	
 	def get_queryset_as_dict(self, queryset, *args, **kwargs):
 		return [ model_to_dict(item) for item in queryset ]
@@ -97,8 +96,31 @@ class PersonaListView(JSONResponseMixin, ListView):
 			return self.render_to_json_response(context, safe=False)
 		else:
 			return super(PersonaListView, self).render_to_response(context)
+		
 
-
+class PersonaSearchView(JSONResponseMixin, BaseListView):
+	
+	query_search = None
+		
+	def get(self, request, *args, **kwargs):
+		self.query_search = ""
+		return super(PersonaSearchView, self).get(request, *args, **kwargs)
+		
+	def get_queryset(self):
+		
+		queryset = None
+		
+		if self.query_search is None:
+			queryset = Persona.objects.all()
+		else:
+			queryset = Persona.objects.filter(nombre__icontains=self.query_search)
+			
+		return queryset
+	
+	def render_to_response(self, context):
+		return self.render_to_json_response(context, safe=False)
+	
+	
 class PersonaEditView(LoginRequiredMixin, UpdateView):
 
 	fields = ['nombre', 'identificacion_codigo', 'congregacion', 'fecha_nacimiento', 'email', 'celular', 'genero']
