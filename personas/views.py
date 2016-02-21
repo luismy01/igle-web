@@ -16,8 +16,9 @@ class PersonaListView(JSONResponseMixin, ListView):
 	
 	context_object_name = "personas"
 	model = Persona
+	ordering = "nombre"
 	paginate_by = 20
-	template_name = "personas/list.html"
+	template_name = "personas/list-table.html"
 	
 	def delete(self, request, *args, **kwargs):
 
