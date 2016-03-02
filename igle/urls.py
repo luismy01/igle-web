@@ -17,4 +17,6 @@ urlpatterns = [
 
 	url(r'^xp/map/$', TemplateView.as_view(template_name="xp/map.html"), name="xp_map"),
 	
+	url(r'^', include('igle.planificador_urls', namespace="planificador")),
+	
 ]
