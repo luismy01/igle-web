@@ -8,6 +8,6 @@ from .planificador_views import YearView
 
 urlpatterns = [
     
-	url(r'^planificador(?P<anio>\d\d\d\d)$', YearView.as_view() ),
+	url(r'^planificador/(?P<anio>\d\d\d\d)$', YearView.as_view(), name="planner_view" ),
 		
 ]
