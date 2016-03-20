@@ -11,8 +11,10 @@
 			</button>
 			<a class="navbar-brand" href="{% url 'home' %}">Start Bootstrap</a>
 		</div>
+
 		<!-- Collect the nav links, forms, and other content for toggling -->
 		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
 			<ul class="nav navbar-nav">
 				<li>
 					<a href="{% url 'personas:list_view' %}">Personas</a>
@@ -25,6 +27,8 @@
 				</li>
 			</ul>
 			
+			{% include "xp/menu.html" %}
+
 			<ul class="nav navbar-nav navbar-right">
 				
 				{% if user.is_authenticated %}
